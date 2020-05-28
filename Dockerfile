@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi
+FROM registry.access.redhat.com/ubi7/ubi
 
 MAINTAINER Joel Adams <jadams@ibm.com>
 LABEL Description="vsftpd Docker image based on Red Hat UBI. Supports passive mode and virtual users." \
