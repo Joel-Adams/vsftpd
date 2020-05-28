@@ -9,8 +9,8 @@ LABEL Description="vsftpd Docker image based on Red Hat UBI. Supports passive mo
 RUN yum -y update && yum clean all
 RUN yum install -y \
 	vsftpd \
-	db4-utils \
-	db4 \
+	libdb4-utils \
+	libdb4 \
 	iproute && yum clean all
 
 RUN groupadd -g 999 appuser && \
