@@ -1,5 +1,8 @@
 FROM registry.access.redhat.com/ubi7/ubi
 
+ARG USER_ID=999
+ARG GROUP_ID=999
+
 MAINTAINER Joel Adams <jadams@ibm.com>
 LABEL Description="vsftpd Docker image based on Red Hat UBI. Supports passive mode and virtual users." \
 	License="Apache License 2.0" \
@@ -13,9 +16,8 @@ RUN yum install -y \
 	libdb4 \
 	iproute && yum clean all
 
-RUN groupadd -g 999 appuser && \
-    useradd -r -u 999 -g appuser appuser
-USER appuser
+RUN usermod -u ${USER_ID} ftp
+RUN groupmod -g ${GROUP_ID} ftp
 
 ENV FTP_USER **String**
 ENV FTP_PASS **Random**
