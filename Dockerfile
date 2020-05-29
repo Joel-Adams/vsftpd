@@ -1,10 +1,10 @@
-FROM centos:7
+FROM registry.access.redhat.com/ubi7/ubi
 
-ARG USER_ID=14
-ARG GROUP_ID=50
+ARG USER_ID=998
+ARG GROUP_ID=998
 
 MAINTAINER Joel Adams <jadams@ibm.com>
-LABEL Description="vsftpd Docker image based on Centos. Supports passive mode and virtual users." \
+LABEL Description="vsftpd Docker image based on Red Hat Universal Base Image. Supports passive mode and virtual users." \
 	License="Apache License 2.0" \
 	Usage="docker run -d -p [HOST PORT NUMBER]:21 -v [HOST FTP HOME]:/home/vsftpd jadams/vsftpd" \
 	Version="1.0"
