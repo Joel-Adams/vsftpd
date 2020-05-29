@@ -1,8 +1,5 @@
 FROM registry.access.redhat.com/ubi7/ubi
 
-ARG USER_ID=14
-ARG GROUP_ID=50
-
 MAINTAINER Joel Adams <jadams@ibm.com>
 LABEL Description="vsftpd Docker image based on Red Hat Universal Base Image. Supports passive mode and virtual users." \
 	License="Apache License 2.0" \
@@ -16,8 +13,9 @@ RUN yum install -y \
 	libdb4 \
 	iproute && yum clean all
 
-RUN usermod -u ${USER_ID} ftp
-RUN groupmod -g ${GROUP_ID} ftp
+RUN groupadd -g 998 ftp && \
+    useradd -r -u 998 -g ftp ftp
+USER ftp
 
 ENV FTP_USER **String**
 ENV FTP_PASS **Random**
@@ -39,7 +37,8 @@ COPY run-vsftpd.sh /usr/sbin/
 RUN chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
     chmod -R ug+rwx /usr/sbin/run-vsftpd.sh && \
     chown -R ftp:ftp /etc/vsftpd && \
-    chmod -R ug+rwx /etc/vsftpd
+    chmod -R ug+rwx /etc/vsftpd &&\
+    chown -R ftp:ftp /home/vsftpd/
 
 
 VOLUME /home/vsftpd
@@ -47,4 +46,4 @@ VOLUME /var/log/vsftpd
 
 EXPOSE 20 21
 
-CMD ["/usr/sbin/run-vsftpd.sh"]
+ENTRYPOINT ["/usr/sbin/run-vsftpd.sh"]
