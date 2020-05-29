@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/ubi7/ubi
 
-ARG USER_ID=999
-ARG GROUP_ID=999
+ARG USER_ID=998
+ARG GROUP_ID=998
 
 MAINTAINER Joel Adams <jadams@ibm.com>
 LABEL Description="vsftpd Docker image based on Red Hat UBI. Supports passive mode and virtual users." \
