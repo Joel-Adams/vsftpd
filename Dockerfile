@@ -15,6 +15,7 @@ RUN yum install -y \
 	libdb4-utils \
 	libdb4 \
 	iproute && yum clean all
+RUN chown -R ftp:ftp /etc/vsftpd/
 
 RUN usermod -u ${USER_ID} ftp
 RUN groupmod -g ${GROUP_ID} ftp
@@ -39,7 +40,7 @@ COPY run-vsftpd.sh /usr/sbin/
 RUN chmod +x /usr/sbin/run-vsftpd.sh
 RUN mkdir -p /home/vsftpd/
 RUN chown -R ftp:ftp /home/vsftpd/
-RUN chown -R ftp:ftp /etc/vsftpd/
+
 
 VOLUME /home/vsftpd
 VOLUME /var/log/vsftpd
