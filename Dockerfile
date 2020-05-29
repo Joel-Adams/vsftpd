@@ -13,7 +13,7 @@ RUN yum install -y \
 	libdb4 \
 	iproute && yum clean all
 
-RUN useradd -r -u 998 -g ftp ftp
+RUN useradd -r -u 999 -g ftp ftp
 USER ftp
 
 ENV FTP_USER **String**
