@@ -17,8 +17,8 @@ else
     export LOG_STDOUT='Yes.'
 fi
 
-echo "$USER"
-cat "$USER"
+echo "$USER" >> /tmp/user
+cat /tmp/user
 
 # Create home dir and update vsftpd user db:
 mkdir -p "/home/vsftpd/${FTP_USER}"
