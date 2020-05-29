@@ -1,7 +1,7 @@
 FROM centos:7
 
-ARG USER_ID=998
-ARG GROUP_ID=998
+ARG USER_ID=14
+ARG GROUP_ID=50
 
 MAINTAINER Joel Adams <jadams@ibm.com>
 LABEL Description="vsftpd Docker image based on Centos. Supports passive mode and virtual users." \
