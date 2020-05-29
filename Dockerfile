@@ -15,7 +15,6 @@ RUN yum install -y \
 	libdb4-utils \
 	libdb4 \
 	iproute && yum clean all
-RUN chown -R ftp:ftp /etc/vsftpd/
 
 RUN usermod -u ${USER_ID} ftp
 RUN groupmod -g ${GROUP_ID} ftp
