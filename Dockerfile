@@ -38,9 +38,9 @@ RUN chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
 
 USER ftp
 
-VOLUME /home/vsftpd
-VOLUME /var/log/vsftpd
+#VOLUME /home/vsftpd
+#VOLUME /var/log/vsftpd
 
-EXPOSE 20 21
+#EXPOSE 20 21
 
 #ENTRYPOINT ["/usr/sbin/run-vsftpd.sh"]
