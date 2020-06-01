@@ -31,12 +31,10 @@ COPY vsftpd_virtual /etc/pam.d/
 COPY run-vsftpd.sh /usr/sbin/
 
 
-RUN mkdir -p /home/vsftpd/
-    chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
+RUN chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
     chmod -R ug+rwx /usr/sbin/run-vsftpd.sh && \
     chown -R ftp:ftp /etc/vsftpd && \
-    chmod -R ug+rwx /etc/vsftpd &&\
-    chown -R ftp:ftp /home/vsftpd/
+    chmod -R ug+rwx /etc/vsftpd
 
 USER ftp
 
