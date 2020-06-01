@@ -43,4 +43,4 @@ VOLUME /var/log/vsftpd
 
 EXPOSE 20 21
 
-ENTRYPOINT ["/usr/sbin/run-vsftpd.sh"]
+#ENTRYPOINT ["/usr/sbin/run-vsftpd.sh"]
