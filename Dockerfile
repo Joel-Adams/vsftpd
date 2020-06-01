@@ -12,6 +12,8 @@ RUN yum install -y \
 	libdb4-utils \
 	libdb4 \
 	iproute && yum clean all
+	
+USER ftp
 
 #ENV FTP_USER **String**
 #ENV FTP_PASS **Random**
@@ -35,8 +37,6 @@ RUN chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
     chmod -R ug+rwx /usr/sbin/run-vsftpd.sh && \
     chown -R ftp:ftp /etc/vsftpd/vsftpd.conf && \
     chmod -R ug+rwx /etc/vsftpd/vsftpd.conf
-
-USER ftp
 
 #VOLUME /home/vsftpd
 #VOLUME /var/log/vsftpd
