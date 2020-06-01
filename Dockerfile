@@ -33,10 +33,11 @@ COPY run-vsftpd.sh /usr/sbin/
 RUN chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
     chmod -R ug+rwx /usr/sbin/run-vsftpd.sh && \
     chown -R ftp:ftp /etc/vsftpd && \
-    chmod -R ug+rwx /etc/vsftpd &&\
-    chown -R ftp:ftp /home/vsftpd/
+    chmod -R ug+rwx /etc/vsftpd
 
 USER ftp
+
+RUN chown -R ftp:ftp /home/vsftpd/
 
 VOLUME /home/vsftpd
 VOLUME /var/log/vsftpd
