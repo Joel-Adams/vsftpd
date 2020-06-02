@@ -1,19 +1,37 @@
-FROM registry.access.redhat.com/ubi7/ubi
+FROM registry.access.redhat.com/ubi8/ubi:8.1
 
-MAINTAINER Joel Adams <jadams@ibm.com>
-LABEL Description="vsftpd Docker image based on Red Hat Universal Base Image. Supports passive mode and virtual users." \
-	License="Apache License 2.0" \
-	Usage="docker run -d -p [HOST PORT NUMBER]:21 -v [HOST FTP HOME]:/home/vsftpd jadams/vsftpd" \
-	Version="1.0"
+RUN yum --disableplugin=subscription-manager -y module enable php:7.3 \
+  && yum --disableplugin=subscription-manager -y install httpd php \
+  && yum --disableplugin=subscription-manager clean all
 
-RUN yum -y update && yum clean all
-RUN yum install -y \
-	vsftpd \
-	libdb4-utils \
-	libdb4 \
-	iproute && yum clean all
-	
+ADD index.php /var/www/html
+
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
+  && mkdir /run/php-fpm \
+  && chgrp -R 0 /var/log/httpd /var/run/httpd /run/php-fpm \
+  && chmod -R g=u /var/log/httpd /var/run/httpd /run/php-fpm
+
+EXPOSE 8080
 USER ftp
+CMD php-fpm & httpd -D FOREGROUND
+
+
+#FROM registry.access.redhat.com/ubi7/ubi
+
+#MAINTAINER Joel Adams <jadams@ibm.com>
+#LABEL Description="vsftpd Docker image based on Red Hat Universal Base Image. Supports passive mode and virtual users." \
+#	License="Apache License 2.0" \
+#	Usage="docker run -d -p [HOST PORT NUMBER]:21 -v [HOST FTP HOME]:/home/vsftpd jadams/vsftpd" \
+#	Version="1.0"
+
+#RUN yum -y update && yum clean all
+#RUN yum install -y \
+#	vsftpd \
+#	libdb4-utils \
+#	libdb4 \
+#	iproute && yum clean all
+	
+#USER ftp
 
 #ENV FTP_USER **String**
 #ENV FTP_PASS **Random**
@@ -28,15 +46,15 @@ USER ftp
 #ENV LOCAL_UMASK 077
 #ENV REVERSE_LOOKUP_ENABLE YES
 
-COPY vsftpd.conf /etc/vsftpd/
-COPY vsftpd_virtual /etc/pam.d/
-COPY run-vsftpd.sh /usr/sbin/
+#COPY vsftpd.conf /etc/vsftpd/
+#COPY vsftpd_virtual /etc/pam.d/
+#COPY run-vsftpd.sh /usr/sbin/
 
 
-RUN chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
-    chmod -R ug+rwx /usr/sbin/run-vsftpd.sh && \
-    chown -R ftp:ftp /etc/vsftpd/vsftpd.conf && \
-    chmod -R ug+rwx /etc/vsftpd/vsftpd.conf
+#RUN chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
+#    chmod -R ug+rwx /usr/sbin/run-vsftpd.sh && \
+#    chown -R ftp:ftp /etc/vsftpd/vsftpd.conf && \
+ #   chmod -R ug+rwx /etc/vsftpd/vsftpd.conf
 
 #VOLUME /home/vsftpd
 #VOLUME /var/log/vsftpd
