@@ -60,4 +60,4 @@ EXPOSE 20 21
 
 USER ftp
 
-ENTRYPOINT ["/usr/sbin/run-vsftpd.sh"]
+CMD ["/usr/sbin/run-vsftpd.sh"]
