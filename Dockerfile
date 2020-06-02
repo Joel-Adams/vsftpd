@@ -33,7 +33,7 @@ RUN yum install -y \
 #	php \
 	iproute && yum clean all
 	
-ENV FTP_USER **String**
+ENV FTP_USER admin
 ENV FTP_PASS **Random**
 ENV PASV_ADDRESS **IPv4**
 ENV PASV_ADDR_RESOLVE NO
@@ -50,8 +50,8 @@ COPY vsftpd.conf /etc/vsftpd/
 COPY vsftpd_virtual /etc/pam.d/
 COPY run-vsftpd.sh /usr/sbin/
 
-RUN mkdir /home/vsftpd && \
-    chown -R 1001:0 /usr/sbin/run-vsftpd.sh /etc/vsftpd/ /home/vsftpd && \
+RUN mkdir /home/vsftpd/admin && \
+    chown -R ftp:ftp /usr/sbin/run-vsftpd.sh /etc/vsftpd/ /home/vsftpd && \
     chmod -R ug+rwx /usr/sbin/run-vsftpd.sh /etc/vsftpd/
     
 #RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
@@ -68,6 +68,6 @@ VOLUME /var/log/vsftpd
 
 EXPOSE 20 21
 
-USER 1001
+USER ftp
 
 CMD ["/usr/sbin/run-vsftpd.sh"]
