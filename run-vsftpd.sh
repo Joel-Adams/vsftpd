@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# If no env var for FTP_USER has been specified, use 'admin':
-if [ "$FTP_USER" = "**String**" ]; then
-    export FTP_USER='admin'
-fi
-
 # If no env var has been specified, generate a random password for FTP_USER:
 if [ "$FTP_PASS" = "**Random**" ]; then
     export FTP_PASS=`cat /dev/urandom | tr -dc A-Z-a-z-0-9 | head -c${1:-16}`
@@ -18,9 +13,9 @@ else
 fi
 
 # Create home dir and update vsftpd user db:
-mkdir -p "/home/vsftpd/${FTP_USER}"
-chown -R ftp:ftp /home/vsftpd/
-chown -R ftp:ftp /etc/vsftpd/
+#mkdir -p "/home/vsftpd/${FTP_USER}"
+#chown -R ftp:ftp /home/vsftpd/
+#chown -R ftp:ftp /etc/vsftpd/
 
 echo "pasv_address=${PASV_ADDRESS}" >> /etc/vsftpd/vsftpd.conf
 echo "pasv_max_port=${PASV_MAX_PORT}" >> /etc/vsftpd/vsftpd.conf
