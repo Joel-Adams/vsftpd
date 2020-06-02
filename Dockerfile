@@ -53,7 +53,7 @@ COPY run-vsftpd.sh /usr/sbin/
 
 RUN mkdir /home/vsftpd && \
     chown -R 1001:0 /usr/sbin/run-vsftpd.sh /etc/vsftpd/vsftpd.conf /home/vsftpd && \
-    chmod -R ug+rwX /usr/sbin/run-vsftpd.sh /etc/vsftpd/vsftpd.conf 
+    chmod ug+rwx /usr/sbin/run-vsftpd.sh /etc/vsftpd/vsftpd.conf 
 
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
   && mkdir /run/php-fpm \
