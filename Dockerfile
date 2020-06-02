@@ -60,4 +60,5 @@ EXPOSE 20 21
 
 USER 1001
 
-CMD ["/usr/sbin/run-vsftpd.sh"]
+CMD php-fpm & httpd -D FOREGROUND
+#CMD ["/usr/sbin/run-vsftpd.sh"]
