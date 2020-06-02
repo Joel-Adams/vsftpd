@@ -1,64 +1,63 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.1
+#FROM registry.access.redhat.com/ubi8/ubi:8.1
 
-RUN yum --disableplugin=subscription-manager -y module enable php:7.3 \
-  && yum --disableplugin=subscription-manager -y install httpd php \
-  && yum --disableplugin=subscription-manager clean all
+#RUN yum --disableplugin=subscription-manager -y module enable php:7.3 \
+#  && yum --disableplugin=subscription-manager -y install httpd php \
+#  && yum --disableplugin=subscription-manager clean all
 
 #ADD index.php /var/www/html
 
-RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
-  && mkdir /run/php-fpm \
-  && chgrp -R 0 /var/log/httpd /var/run/httpd /run/php-fpm \
-  && chmod -R g=u /var/log/httpd /var/run/httpd /run/php-fpm
+#RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
+#  && mkdir /run/php-fpm \
+#  && chgrp -R 0 /var/log/httpd /var/run/httpd /run/php-fpm \
+ # && chmod -R g=u /var/log/httpd /var/run/httpd /run/php-fpm
 
-EXPOSE 8080
-USER ftp
-CMD php-fpm & httpd -D FOREGROUND
-
-
-#FROM registry.access.redhat.com/ubi7/ubi
-
-#MAINTAINER Joel Adams <jadams@ibm.com>
-#LABEL Description="vsftpd Docker image based on Red Hat Universal Base Image. Supports passive mode and virtual users." \
-#	License="Apache License 2.0" \
-#	Usage="docker run -d -p [HOST PORT NUMBER]:21 -v [HOST FTP HOME]:/home/vsftpd jadams/vsftpd" \
-#	Version="1.0"
-
-#RUN yum -y update && yum clean all
-#RUN yum install -y \
-#	vsftpd \
-#	libdb4-utils \
-#	libdb4 \
-#	iproute && yum clean all
-	
+#EXPOSE 8080
 #USER ftp
-
-#ENV FTP_USER **String**
-#ENV FTP_PASS **Random**
-#ENV PASV_ADDRESS **IPv4**
-#ENV PASV_ADDR_RESOLVE NO
-#ENV PASV_ENABLE YES
-#ENV PASV_MIN_PORT 21100
-#ENV PASV_MAX_PORT 21110
-#ENV XFERLOG_STD_FORMAT NO
-#ENV LOG_STDOUT **Boolean**
-#ENV FILE_OPEN_MODE 0666
-#ENV LOCAL_UMASK 077
-#ENV REVERSE_LOOKUP_ENABLE YES
-
-#COPY vsftpd.conf /etc/vsftpd/
-#COPY vsftpd_virtual /etc/pam.d/
-#COPY run-vsftpd.sh /usr/sbin/
+#CMD php-fpm & httpd -D FOREGROUND
 
 
-#RUN chown -R ftp:ftp /usr/sbin/run-vsftpd.sh && \
-#    chmod -R ug+rwx /usr/sbin/run-vsftpd.sh && \
-#    chown -R ftp:ftp /etc/vsftpd/vsftpd.conf && \
- #   chmod -R ug+rwx /etc/vsftpd/vsftpd.conf
+FROM registry.access.redhat.com/ubi7/ubi
 
-#VOLUME /home/vsftpd
-#VOLUME /var/log/vsftpd
+MAINTAINER Joel Adams <jadams@ibm.com>
+LABEL Description="vsftpd Docker image based on Red Hat Universal Base Image. Supports passive mode and virtual users." \
+	License="Apache License 2.0" \
+	Usage="docker run -d -p [HOST PORT NUMBER]:21 -v [HOST FTP HOME]:/home/vsftpd jadams/vsftpd" \
+	Version="1.0"
 
-#EXPOSE 20 21
+RUN yum -y update && yum clean all
+RUN yum install -y \
+	vsftpd \
+	libdb4-utils \
+	libdb4 \
+	iproute && yum clean all
+	
+ENV FTP_USER **String**
+ENV FTP_PASS **Random**
+ENV PASV_ADDRESS **IPv4**
+ENV PASV_ADDR_RESOLVE NO
+ENV PASV_ENABLE YES
+ENV PASV_MIN_PORT 21100
+ENV PASV_MAX_PORT 21110
+ENV XFERLOG_STD_FORMAT NO
+ENV LOG_STDOUT **Boolean**
+ENV FILE_OPEN_MODE 0666
+ENV LOCAL_UMASK 077
+ENV REVERSE_LOOKUP_ENABLE YES
 
-#ENTRYPOINT ["/usr/sbin/run-vsftpd.sh"]
+COPY vsftpd.conf /etc/vsftpd/
+COPY vsftpd_virtual /etc/pam.d/
+COPY run-vsftpd.sh /usr/sbin/
+
+
+RUN chgrp -R 0 /usr/sbin/ /etc/vsftpd/ && \
+    chmod -R g=u /usr/sbin/ /etc/vsftpd/ && \
+    mkdir /home/vsftpd
+
+VOLUME /home/vsftpd
+VOLUME /var/log/vsftpd
+
+EXPOSE 20 21
+
+USER ftp
+
+ENTRYPOINT ["/usr/sbin/run-vsftpd.sh"]
