@@ -29,6 +29,8 @@ RUN yum install -y \
 	vsftpd \
 	libdb4-utils \
 	libdb4 \
+	httpd \
+	php \
 	iproute && yum clean all
 	
 ENV FTP_USER **String**
@@ -53,11 +55,21 @@ RUN chgrp -R 0 /usr/sbin/ /etc/vsftpd/ && \
     chmod -R g=u /usr/sbin/ /etc/vsftpd/ && \
     mkdir /home/vsftpd
 
+RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
+  && mkdir /run/php-fpm \
+  && chgrp -R 0 /var/log/httpd /var/run/httpd /run/php-fpm \
+  && chmod -R g=u /var/log/httpd /var/run/httpd /run/php-fpm
+
+
 VOLUME /home/vsftpd
 VOLUME /var/log/vsftpd
 
-EXPOSE 20 21
-
+EXPOSE 8080
 USER ftp
+CMD php-fpm & httpd -D FOREGROUND
 
-CMD ["/usr/sbin/run-vsftpd.sh"]
+#EXPOSE 20 21
+
+#USER ftp
+
+#CMD ["/usr/sbin/run-vsftpd.sh"]
