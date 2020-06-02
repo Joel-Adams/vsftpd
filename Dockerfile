@@ -51,9 +51,10 @@ COPY vsftpd_virtual /etc/pam.d/
 COPY run-vsftpd.sh /usr/sbin/
 
 
-RUN chgrp -R 0 /usr/sbin/ /etc/vsftpd/ && \
-    chmod -R g=u /usr/sbin/ /etc/vsftpd/ && \
-    mkdir /home/vsftpd
+RUN mkdir /home/vsftpd && \
+    chown -R 1001:0 /usr/sbin/run-vsftpd.sh /etc/vsftpd/ /home/vsftpd && \
+    chmod -R ug+rwX /usr/sbin/ /etc/vsftpd/ 
+
 
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
   && mkdir /run/php-fpm \
