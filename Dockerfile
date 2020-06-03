@@ -33,7 +33,7 @@ COPY vsftpd_virtual /etc/pam.d/
 COPY run-vsftpd.sh /usr/sbin/
 
 RUN mkdir -p /home/vsftpd/admin && \
-    chown -R 1001:0 /usr/sbin/run-vsftpd.sh /etc/vsftpd/ /home/vsftpd && \
+    chown -R 1001:0 /usr/sbin/run-vsftpd.sh /etc/vsftpd/ /home/vsftpd /user/sbin/vsftpd && \
     chmod -R ug+rwx /usr/sbin/run-vsftpd.sh /etc/vsftpd/
     
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
