@@ -32,9 +32,13 @@ COPY vsftpd.conf /etc/vsftpd/
 COPY vsftpd_virtual /etc/pam.d/
 COPY run-vsftpd.sh /usr/sbin/
 
-RUN mkdir -p /home/vsftpd/admin && \
-    chown -R 1001:0 /usr/sbin/run-vsftpd.sh /etc/vsftpd/ /home/vsftpd /usr/sbin/vsftpd && \
-    chmod -R ug+rwx /usr/sbin/run-vsftpd.sh /etc/vsftpd/
+#RUN mkdir -p /home/vsftpd/admin && \
+#    chown -R 1001:0 /usr/sbin/run-vsftpd.sh /etc/vsftpd/ /home/vsftpd /usr/sbin/vsftpd && \
+#    chmod -R ug+rwx /usr/sbin/run-vsftpd.sh /etc/vsftpd/
+
+RUN chmod +x /usr/sbin/run-vsftpd.sh
+RUN mkdir -p /home/vsftpd/
+RUN chown -R ftp:ftp /home/vsftpd/
     
 RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
   && mkdir /run/php-fpm \
