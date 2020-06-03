@@ -48,7 +48,8 @@ RUN mkdir -p /home/vsftpd/admin && \
 VOLUME /home/vsftpd
 VOLUME /var/log/vsftpd
 
-EXPOSE 20 #21
+EXPOSE 20 
+#21
 
 USER 1001
 
