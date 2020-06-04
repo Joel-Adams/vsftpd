@@ -13,9 +13,9 @@ else
 fi
 
 # Create home dir and update vsftpd user db:
-#mkdir -p "/home/vsftpd/${FTP_USER}"
-#chown -R ftp:ftp /home/vsftpd/
-#chown -R ftp:ftp /etc/vsftpd/
+mkdir -p "/home/vsftpd/${FTP_USER}"
+chown -R ftp:ftp /home/vsftpd/
+chown -R ftp:ftp /etc/vsftpd/
 
 echo "pasv_address=${PASV_ADDRESS}" >> /etc/vsftpd/vsftpd.conf
 echo "pasv_max_port=${PASV_MAX_PORT}" >> /etc/vsftpd/vsftpd.conf
