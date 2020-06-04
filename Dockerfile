@@ -11,8 +11,8 @@ RUN yum install -y \
 	vsftpd \
 	libdb4-utils \
 	libdb4 \
-	httpd \
-	php \
+#	httpd \
+#	php \
 	iproute && yum clean all
 	
 ENV FTP_USER admin
@@ -29,29 +29,27 @@ ENV LOCAL_UMASK 077
 ENV REVERSE_LOOKUP_ENABLE YES
 
 COPY vsftpd.conf /etc/vsftpd/
-COPY vsftpd.conf /etc/
 COPY vsftpd_virtual /etc/pam.d/
 COPY run-vsftpd.sh /usr/sbin/
 
 RUN mkdir -p /home/vsftpd/admin && \
-    chown -R ftp:ftp /usr/sbin/run-vsftpd.sh /etc/vsftpd/ /home/vsftpd /usr/sbin/vsftpd && \
-    chmod -R ug+rwx /usr/sbin/run-vsftpd.sh /etc/vsftpd/
+    chown -R ftp:ftp /home/vsftpd && \
+    chmod +x /usr/sbin/run-vsftpd.sh
     
-RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
-  && mkdir /run/php-fpm \
-  && chgrp -R 0 /var/log/httpd /var/run/httpd /run/php-fpm \
-  && chmod -R g=u /var/log/httpd /var/run/httpd /run/php-fpm
+#RUN sed -i 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
+#  && mkdir /run/php-fpm \
+#  && chgrp -R 0 /var/log/httpd /var/run/httpd /run/php-fpm \
+#  && chmod -R g=u /var/log/httpd /var/run/httpd /run/php-fpm
 
-EXPOSE 8080
+#EXPOSE 8080
+#USER ftp
+#CMD php-fpm & httpd -D FOREGROUND
+
+VOLUME /home/vsftpd
+VOLUME /var/log/vsftpd
+
+EXPOSE 20 21
+
 USER ftp
-CMD php-fpm & httpd -D FOREGROUND
 
-#VOLUME /home/vsftpd
-#VOLUME /var/log/vsftpd
-
-#EXPOSE 20 
-#21
-
-#USER 1001
-
-#CMD ["/usr/sbin/run-vsftpd.sh"]
+CMD ["/usr/sbin/run-vsftpd.sh"]
