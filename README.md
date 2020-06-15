@@ -87,7 +87,7 @@ Use cases
 docker run -d -p 21:21 -v /my/data/directory:/home/vsftpd --name automation-ftp joeladams/automation-ftp
 
 **see logs for credentials:**
-docker logs automation-ftp
+docker logs vsftpd
 
 3) Create a production container with a custom user account, binding a data directory and enabling both active and passive mode:
 
