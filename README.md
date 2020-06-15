@@ -80,13 +80,14 @@ When sharing a homes directory between the host and the container (/home/vsftpd)
 Use cases
 1) Create a temporary container for testing purposes:
 
-  docker run --rm joeladams/vsftpd
+  docker run --rm joeladams/automation-ftp
 
 2) Create a container in active mode using the default user account, with a binded data directory:
 
-docker run -d -p 21:21 -v /my/data/directory:/home/vsftpd --name vsftpd joeladams/vsftpd
+docker run -d -p 21:21 -v /my/data/directory:/home/vsftpd --name automation-ftp joeladams/automation-ftp
+
 **see logs for credentials:**
-docker logs vsftpd
+docker logs automation-ftp
 
 3) Create a production container with a custom user account, binding a data directory and enabling both active and passive mode:
 
@@ -94,7 +95,7 @@ docker run -d -v /my/data/directory:/home/vsftpd \
 -p 20:20 -p 21:21 -p 21100-21110:21100-21110 \
 -e FTP_USER=myuser -e FTP_PASS=mypass \
 -e PASV_ADDRESS=127.0.0.1 -e PASV_MIN_PORT=21100 -e PASV_MAX_PORT=21110 \
---name vsftpd --restart=always joeladams/vsftpd
+--name vsftpd --restart=always joeladams/automation-ftp
 
 4) Manually add a new FTP user to an existing container:
 
