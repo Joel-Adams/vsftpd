@@ -37,7 +37,7 @@ RUN mkdir -p /home/vsftpd/ && \
 VOLUME /home/vsftpd
 VOLUME /var/log/vsftpd
 
-EXPOSE 20 21
+EXPOSE 20 21 2222
 
 USER ftp
 
